@@ -19,31 +19,29 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Create PEM file from secret
-        env:
-          PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+      - name: Prepare extension for packaging
         run: |
-          echo "$PRIVATE_KEY" > private-key.pem
-          chmod 600 private-key.pem
+          zip -r extension.zip manifest.json content.js README.md -x "*.git*"
 
       - name: Build CRX
         id: build-crx
-        uses: wOxxOm/chrome-extension-crx@v1
+        uses: cardinalby/webext-buildtools-chrome-crx-action@v2
         with:
-          extension-path: '.'
-          private-key: './private-key.pem'
+          zipFilePath: extension.zip
+          crxFilePath: chrome-extension-alt-click-blocker.crx
+          privateKey: ${{ secrets.CRX_PRIVATE_KEY }}
 
       - name: Upload CRX as artifact
         uses: actions/upload-artifact@v4
         with:
           name: chrome-extension-crx
-          path: ${{ steps.build-crx.outputs.crx-path }}
+          path: chrome-extension-alt-click-blocker.crx
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ steps.build-crx.outputs.crx-path }}
+          files: chrome-extension-alt-click-blocker.crx
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
