@@ -1,0 +1,16 @@
+# 秘密鍵ファイル（絶対にコミットしない）
+*.pem
+
+# パッケージファイル
+*.crx
+*.zip
+
+# macOS
+.DS_Store
+
+# エディタ
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

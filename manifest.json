@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Alt+Click Download Blocker",
+  "version": "1.0.0",
+  "description": "リンクのAlt+クリック(macではOption+クリック)によるHTMLダウンロードを抑制します",
+  "permissions": [],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
+}
